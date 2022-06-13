@@ -24,6 +24,9 @@ class APIClient(ContextDecorator):
 
         return self
 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     def _form_url(self, partial_url) -> str:
         return f'{self.api_config.host}/{partial_url}'
 
