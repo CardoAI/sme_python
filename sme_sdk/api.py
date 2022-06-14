@@ -1,5 +1,7 @@
 from contextlib import ContextDecorator
 from functools import cached_property
+from typing import Literal
+from urllib import parse
 
 import requests
 
@@ -11,7 +13,7 @@ from sme_sdk.urls import Url
 
 
 class APIClient(ContextDecorator):
-    ACCESS_TOKEN_NAME = 'access_token'
+    ACCESS_TOKEN_NAME: Literal['access_token'] = 'access_token'
     FILE_URL_NAME = 'file_url'
 
     def __init__(self, api_config: APIConfig):
@@ -20,7 +22,7 @@ class APIClient(ContextDecorator):
 
     def __enter__(self):
         login_response = self.login()
-        self._access_token = login_response['access_token']
+        self._access_token = login_response[self.ACCESS_TOKEN_NAME]
 
         return self
 
@@ -28,7 +30,7 @@ class APIClient(ContextDecorator):
         pass
 
     def _form_url(self, partial_url) -> str:
-        return f'{self.api_config.host}/{partial_url}'
+        return parse.urljoin(self.api_config.host, partial_url)
 
     @cached_property
     def _login_data(self):

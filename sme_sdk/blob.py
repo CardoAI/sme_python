@@ -12,10 +12,11 @@ class BlobStorageClient(ABC):
 
     @abstractmethod
     def save_data(self, data) -> str:
-        pass
+        raise NotImplementedError()
 
 
 class S3BlobStorageClient(BlobStorageClient):
+    SERVICE_NAME = 's3'
 
     def __init__(self, s3_config: S3Config):
         self.s3_config = s3_config
@@ -23,7 +24,7 @@ class S3BlobStorageClient(BlobStorageClient):
 
     def _create_client(self):
         return boto3.client(
-            's3',
+            self.SERVICE_NAME,
             aws_access_key_id=self.s3_config.s3_access_key_id,
             aws_secret_access_key=self.s3_config.s3_secret_access_key,
             region_name=self.s3_config.s3_region_name
@@ -37,7 +38,7 @@ class S3BlobStorageClient(BlobStorageClient):
         generator = self.s3_config.file_name_generator or self._default_file_name_generator
         return generator(data)
 
-    def create_presigned_url(self, file_name) -> str:
+    def _create_presigned_url(self, file_name) -> str:
         return self._client.generate_presigned_url(
             ClientMethod='get_object',
             Params={
@@ -57,4 +58,4 @@ class S3BlobStorageClient(BlobStorageClient):
         if (status_code := response['ResponseMetadata']['HTTPStatusCode']) != 200:
             raise UploadFailed('S3 upload failed', status_code)
 
-        return self.create_presigned_url(file_name)
+        return self._create_presigned_url(file_name)
