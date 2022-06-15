@@ -5,7 +5,7 @@
 ### Install
 
 ```bash
-pip install sme-sdk
+pip install -U cardo-sme-sdk
 ```
 
 ### Usage
