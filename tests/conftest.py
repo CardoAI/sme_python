@@ -25,10 +25,10 @@ def api_config():
 @pytest.fixture
 def s3_config():
     return S3Config(
-        s3_access_key_id='access_key_id',
-        s3_secret_access_key='secret_access_key',
-        s3_region_name='region-name',
-        s3_bucket_name='bucket_name'
+        access_key_id='access_key_id',
+        secret_access_key='secret_access_key',
+        region_name='region-name',
+        bucket_name='bucket_name'
     )
 
 

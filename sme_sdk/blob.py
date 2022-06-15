@@ -25,9 +25,9 @@ class S3BlobStorageClient(BlobStorageClient):
     def _create_client(self):
         return boto3.client(
             self.SERVICE_NAME,
-            aws_access_key_id=self.s3_config.s3_access_key_id,
-            aws_secret_access_key=self.s3_config.s3_secret_access_key,
-            region_name=self.s3_config.s3_region_name
+            aws_access_key_id=self.s3_config.access_key_id,
+            aws_secret_access_key=self.s3_config.secret_access_key,
+            region_name=self.s3_config.region_name
         )
 
     @staticmethod
@@ -42,16 +42,16 @@ class S3BlobStorageClient(BlobStorageClient):
         return self._client.generate_presigned_url(
             ClientMethod='get_object',
             Params={
-                'Bucket': self.s3_config.s3_bucket_name,
+                'Bucket': self.s3_config.bucket_name,
                 'Key': file_name
             },
-            ExpiresIn=self.s3_config.s3_presigned_url_expiration_time
+            ExpiresIn=self.s3_config.presigned_url_expiration_time
         )
 
     def save_data(self, data) -> str:
         file_name = self._generate_file_name(data)
         response = self._client.put_object(
-            Bucket=self.s3_config.s3_bucket_name,
+            Bucket=self.s3_config.bucket_name,
             Key=file_name,
             Body=json_to_bytes(data)
         )

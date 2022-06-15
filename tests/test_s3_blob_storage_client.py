@@ -50,17 +50,17 @@ def test_save_data_will_put_data_to_s3(mock_uuid4, s3_client):
         s3_client.save_data(data)
 
         mock_put_object.assert_called_once_with(
-            Bucket=s3_client.s3_config.s3_bucket_name,
+            Bucket=s3_client.s3_config.bucket_name,
             Key=s3_client._generate_file_name(data),
             Body=json_to_bytes(data)
         )
         mock_generate_presigned_url.assert_called_once_with(
             ClientMethod='get_object',
             Params={
-                'Bucket': s3_client.s3_config.s3_bucket_name,
+                'Bucket': s3_client.s3_config.bucket_name,
                 'Key': s3_client._generate_file_name(data)
             },
-            ExpiresIn=s3_client.s3_config.s3_presigned_url_expiration_time
+            ExpiresIn=s3_client.s3_config.presigned_url_expiration_time
         )
 
 
