@@ -22,10 +22,10 @@ api_config = sme_sdk.APIConfig(
     password='password',
 )
 s3_config = sme_sdk.S3Config(
-    s3_access_key_id='access_key_id',
-    s3_secret_access_key='secret_access_key',
-    s3_bucket_name='bucket_name',
-    s3_region_name='region_name',
+    access_key_id='access_key_id',
+    secret_access_key='secret_access_key',
+    bucket_name='bucket_name',
+    region_name='region_name',
 )
 
 # When you want to use SME API, you need to create an APIClient object using the api_config created before.
