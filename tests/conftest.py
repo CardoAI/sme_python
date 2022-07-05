@@ -17,8 +17,7 @@ class MockResponse:
 def api_config():
     return APIConfig(
         host='http://localhost:8080',
-        username='username',
-        password='password',
+        api_key='api_key',
     )
 
 

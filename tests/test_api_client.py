@@ -14,36 +14,6 @@ def test_form_url_prefix_urls_with_host(api_client):
     assert api_client._form_url('/api/v1/login') == 'http://localhost:8080/api/v1/login'
 
 
-@mock.patch('sme_sdk.api.APIClient.login')
-def test_entering_performs_login(login_mock: MagicMock, api_config):
-    """
-    Ensure that entering the context performs a login.
-    """
-    with APIClient(api_config):
-        login_mock.assert_called_once()
-
-
-@mock.patch('sme_sdk.api.requests.post')
-def test_when_login_successful_access_token_is_set(post_mock: MagicMock, api_client):
-    """
-    Ensure that when the login is successful the access token is set.
-    """
-    post_mock.return_value.status_code = 200
-    post_mock.return_value.json.return_value = {'access_token': 'access_token'}
-    with api_client:
-        assert api_client._access_token == 'access_token'
-
-
-@mock.patch('sme_sdk.api.requests.post')
-def test_when_login_fails_exception_is_raised(post_mock: MagicMock, api_client, failed_response):
-    """
-    Ensure that when the login fails an exception is raised.
-    """
-    post_mock.return_value = failed_response
-    with pytest.raises(LoginFailed):
-        api_client.login()
-
-
 @mock.patch('sme_sdk.api.requests.post')
 def test_create_new_batch_return_response_data_at_success(
     mock_post: MagicMock,

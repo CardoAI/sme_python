@@ -5,8 +5,7 @@ from typing import Callable, Optional
 @dataclass
 class APIConfig:
     host: str
-    username: str
-    password: str
+    api_key: str
 
 
 @dataclass
