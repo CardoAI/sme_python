@@ -47,3 +47,13 @@ class APIClient:
             return response.json()
         else:
             raise BatchResultRetrieveFailed(response.text, response.status_code)
+
+    def test_connection(self) -> bool:
+        """
+        Return True if connection is established, False otherwise.
+        """
+        response = requests.get(
+            url=f'{self._form_url(Url.internal.value)}/test',
+            headers=self._headers
+        )
+        return response.status_code == HTTPStatus.OK
